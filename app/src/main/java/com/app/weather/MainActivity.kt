@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherTheme {
+                //Testing for commit A
                 val weatherViewModel = hiltViewModel<WeatherViewModel>()
                 val weatherState = weatherViewModel.weatherState.collectAsState().value
 
