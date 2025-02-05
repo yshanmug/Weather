@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.weather.remote.WeatherResponseDto
+import com.app.weather.screen.WeatherHomeScreen
 import com.app.weather.ui.theme.WeatherTheme
 import com.app.weather.viewmodels.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -132,6 +133,7 @@ fun WeatherContent(weatherState: WeatherResponseDto?, modifier: Modifier = Modif
             modifier = modifier
         )
     }
+    WeatherHomeScreen()
 }
 
 @Composable
