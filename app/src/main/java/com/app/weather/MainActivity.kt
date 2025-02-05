@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
                 val weatherViewModel = hiltViewModel<WeatherViewModel>()
                 val weatherState = weatherViewModel.weatherState.collectAsState().value
 
+                //Testing for commit B1
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     WeatherContent(
                         weatherState = weatherState,
