@@ -67,7 +67,7 @@ fun WeatherContent(weatherState: WeatherResponseDto?, modifier: Modifier = Modif
             Text(
                 text = "Hourly Weather Data.",
                 style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier.padding(bottom = 16.dp, top = 22.dp)
+                modifier = Modifier.padding(bottom = 16.dp, top = 25.dp)
             )
 
         }
