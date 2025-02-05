@@ -36,15 +36,19 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherTheme {
+                //Testing for commit A
                 val weatherViewModel = hiltViewModel<WeatherViewModel>()
                 val weatherState = weatherViewModel.weatherState.collectAsState().value
 
+                //Testing for commit B1
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     WeatherContent(
                         weatherState = weatherState,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+
+                //Testing for commit C
             }
         }
     }
@@ -58,6 +62,7 @@ fun WeatherContent(weatherState: WeatherResponseDto?, modifier: Modifier = Modif
     val hourlyData = weatherState.hourly
     val dailyData = weatherState.daily
 
+        //Testing for commit D
     // Display the weather data in a LazyColumn
     LazyColumn(modifier = Modifier
         .fillMaxSize()
