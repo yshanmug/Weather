@@ -47,6 +47,8 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+
+                //Testing for commit C
             }
         }
     }
