@@ -62,6 +62,7 @@ fun WeatherContent(weatherState: WeatherResponseDto?, modifier: Modifier = Modif
     val hourlyData = weatherState.hourly
     val dailyData = weatherState.daily
 
+        //Testing for commit D
     // Display the weather data in a LazyColumn
     LazyColumn(modifier = Modifier
         .fillMaxSize()
