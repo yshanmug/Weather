@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.kapt)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.play.services.location)
 
     kapt(libs.hilt.kapt)
     implementation(libs.retrofit)

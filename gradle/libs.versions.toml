@@ -14,6 +14,7 @@ hilt-navigation-compose = "1.2.0"
 retrofitVersion = "2.9.0"
 moshiVersion = "1.14.0"
 org-jetbrains-kotlin-android = "1.8.0"
+gms-version = "21.3.0"
 
 
 [libraries]
@@ -38,6 +39,7 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 retrofit = { group = "com.squareup.retrofit2",name = "retrofit", version.ref = "retrofitVersion" }
 moshi-kotlin = {group = "com.squareup.moshi" , name = "moshi-kotlin" , version.ref = "moshiVersion" }
 converter-moshi = {group = "com.squareup.retrofit2" , name = "converter-moshi" , version.ref = "retrofitVersion" }
+play-services-location = {group = "com.google.android.gms", name = "play-services-location", version.ref= "gms-version"}
 
 
 [plugins]
