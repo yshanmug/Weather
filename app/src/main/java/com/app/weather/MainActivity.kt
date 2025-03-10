@@ -49,8 +49,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var weatherViewModel: WeatherViewModel
+//    @Inject
+//    lateinit var weatherViewModel: WeatherViewModel
 
     private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var settingsClient: SettingsClient
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
 
 
-//    private val weatherViewModel: WeatherViewModel by viewModels()
+    private val weatherViewModel: WeatherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
