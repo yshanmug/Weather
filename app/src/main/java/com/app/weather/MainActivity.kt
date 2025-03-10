@@ -1,10 +1,21 @@
 package com.app.weather
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,26 +31,64 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.app.weather.remote.WeatherResponseDto
 import com.app.weather.screen.WeatherHomeScreen
 import com.app.weather.ui.theme.WeatherTheme
 import com.app.weather.viewmodels.WeatherViewModel
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.internal.InjectedFieldSignature
+import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var weatherViewModel: WeatherViewModel
+
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+    private lateinit var settingsClient: SettingsClient
+//    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationSettingsRequest: LocationSettingsRequest
+
+
+
+//    private val weatherViewModel: WeatherViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        settingsClient = LocationServices.getSettingsClient(this)
+//        createLocationRequest()
+        permissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ){ permissions ->
+            Log.d("printlog", permissions.toString())
+            val isFineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
+            val isCoarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
+            if (isFineLocationGranted || isCoarseLocationGranted) {
+                checkGpsAndRequestEnable()
+            }
+
+                weatherViewModel.getWeatherData()
+
+        }
+        permissionLauncher.launch(arrayOf(
+           Manifest.permission.ACCESS_FINE_LOCATION,
+           Manifest.permission.ACCESS_COARSE_LOCATION,
+        ))
+
         setContent {
             WeatherTheme {
                 //Testing for commit A
-                val weatherViewModel = hiltViewModel<WeatherViewModel>()
+//                val weatherViewModel = hiltViewModel<WeatherViewModel>()
                 val weatherState = weatherViewModel.weatherState.collectAsState().value
-
                 //Testing for commit B1
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     WeatherContent(
@@ -47,12 +96,51 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-
                 //Testing for commit C
             }
         }
+
+
     }
+
+//    private fun createLocationRequest() {
+//        var locationRequest = LocationRequest.Builder(
+//            Priority.PRIORITY_HIGH_ACCURACY,
+//            10000 // 10 seconds update interval
+//        ).build()
+//
+//        var locationSettingsRequest = LocationSettingsRequest.Builder()
+//            .addLocationRequest(locationRequest)
+//            .setAlwaysShow(true) // Show the GPS enable dialog
+//            .build()
+//    }
+
+
+    private fun checkGpsAndRequestEnable() {
+        settingsClient.checkLocationSettings(locationSettingsRequest)
+            .addOnSuccessListener {
+                // GPS is already enabled, proceed with location fetching
+                Log.d("GPS", "GPS is already enabled")
+            }
+            .addOnFailureListener { exception ->
+                if (exception is ResolvableApiException) {
+                    try {
+                        exception.startResolutionForResult(
+                            this,
+                            1001
+                        ) // Request code for GPS enable dialog
+                    } catch (sendEx: IntentSender.SendIntentException) {
+                        Log.e("GPS", "Error enabling GPS", sendEx)
+                    }
+                }
+            }
+    }
+
 }
+
+
+
+
 
 @Composable
 fun WeatherContent(weatherState: WeatherResponseDto?, modifier: Modifier = Modifier) {
