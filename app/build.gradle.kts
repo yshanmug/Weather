@@ -8,34 +8,35 @@ plugins {
 }
 
 android {
-    namespace = "com.app.weather"
+    namespace = "com.app.feelweather"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.app.weather"
+        applicationId = "com.app.feelweather"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
+        targetSdk = 35
+        versionCode = 4
+        versionName = "1.1.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -70,6 +71,15 @@ dependencies {
     implementation(libs.hilt.kapt)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.play.services.location)
+    implementation(libs.coil.gif)
+    implementation(libs.coil.compose)
+    implementation(libs.error.prone.annotations)
+
+    implementation(libs.lottie.version)
+
+
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     kapt(libs.hilt.kapt)
     implementation(libs.retrofit)
@@ -82,5 +92,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+//    room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
+
 
 }
